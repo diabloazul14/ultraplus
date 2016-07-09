@@ -1,0 +1,1 @@
+#The purpose of this class is to perform any digital signal analsis presented to it.
