@@ -4,6 +4,7 @@ import midi
 import signalAnalysis as sa
 import sys
 import wave
+import numpy as np
 
 #Wav file data grabbing
 # wavFile = wav.wav(str(sys.argv[1]))
@@ -41,6 +42,10 @@ print("crossingPoints: " + str(crossingPoints))
 
 #Analyze the Samples
 #analyzer = sa.signalAnalysis(samples)
+samples = wav.zeroPadSamples(samples)
+frequencies = np.fft.fft(samples)
+for frequency in frequencies:
+	print(frequencies)
 
 #Convert the samples into midi file
 

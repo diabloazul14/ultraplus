@@ -57,13 +57,14 @@ def average(leftChannel, rightChannel):
 		#self.zeroPadSamples()
 		return self.samples
 
-	def zeroPadSamples(self):
-		lenOfSamples = len(self.samples)
-		i = 1
-		powerOfTwoGreaterThanLenOfSamples = 0
-		while powerOfTwoGreaterThanLenOfSamples <= lenOfSamples:
-			powerOfTwoGreaterThanLenOfSamples = 2 ** i
-			i += 1
-		diffInLenOfSamples = powerOfTwoGreaterThanLenOfSamples - lenOfSamples
-		for diff in range(diffInLenOfSamples):
-			self.samples.append(0)
+def zeroPadSamples(samples):
+	lenOfSamples = len(samples)
+	i = 1
+	powerOfTwoGreaterThanLenOfSamples = 0
+	while powerOfTwoGreaterThanLenOfSamples <= lenOfSamples:
+		powerOfTwoGreaterThanLenOfSamples = 2 ** i
+		i += 1
+	diffInLenOfSamples = powerOfTwoGreaterThanLenOfSamples - lenOfSamples
+	for diff in range(diffInLenOfSamples):
+		samples.append(0)
+	return samples
