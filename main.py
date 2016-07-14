@@ -24,6 +24,8 @@ for sample in hexsamples:
 	presamples.append(wav.littleEndianStringToInteger(sample))
 
 
+
+
 samples = []
 if wavFile.getnchannels() == 1:
 	samples = presamples
@@ -34,18 +36,29 @@ if wavFile.getnchannels() == 2:
 		samples.append(wav.average(presamples[i], presamples[i + 1]))
 		i += 2
 
-crossingPoints = 0
+#shift the samples into the right range
+i = 0
+shiftValue = -32767
 for sample in samples:
-	if sample < 30:
-		crossingPoints += 1
-print("crossingPoints: " + str(crossingPoints))
+	samples[i] = sample + shiftValue
+	# print(samples[i])
+	i += 1
 
 #Analyze the Samples
-#analyzer = sa.signalAnalysis(samples)
-samples = wav.zeroPadSamples(samples)
-frequencies = np.fft.fft(samples)
-for frequency in frequencies:
-	print(frequencies)
+
+samplesPerWindow = sa.sampleWindowSize()
+segments = sa.breakSamplesBySamplingRate(samples, samplesPerWindow)
+
+beginning = 0
+end = int(samplesPerWindow)
+dominantFrequencies = []
+for block in range(int(segments) - 1):
+	dominantFrequencies.append(sa.getFrequency(samples[beginning:end]))
+	beginning += int(samplesPerWindow)
+	end += int(samplesPerWindow)
+
+print(str(sum(dominantFrequencies) / float(len(dominantFrequencies))))
+
 
 #Convert the samples into midi file
 
