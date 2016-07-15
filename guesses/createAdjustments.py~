@@ -1,0 +1,2 @@
+theFile = open("", 'r')
+
