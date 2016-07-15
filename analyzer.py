@@ -1,0 +1,5 @@
+import os
+for i in range(5000):
+    fileName = "sineWaveGenerator/" + str(i) + ".wav"
+    os.system("python main.py " + fileName)
+    

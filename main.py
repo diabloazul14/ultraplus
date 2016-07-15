@@ -57,7 +57,8 @@ for block in range(int(segments) - 1):
 	beginning += int(samplesPerWindow)
 	end += int(samplesPerWindow)
 
-print(str(sum(dominantFrequencies) / float(len(dominantFrequencies))))
+# print(dominantFrequencies)
+print(str(sa.average(dominantFrequencies)))
 
 
 #Convert the samples into midi file

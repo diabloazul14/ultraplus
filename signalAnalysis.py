@@ -1,7 +1,7 @@
 #The purpose of this class is to perform any digital signal analsis presented to it.
 import math
-bpm = 100
-noteLength = 8
+bpm = 60
+noteLength = 16
 sampleRate = 44100.0
 
 
@@ -49,3 +49,8 @@ def sampleWindowSize():
     xNoteTimePeriod = secondsPerMeasure / float(noteLength)
     sample_window_size = sampleRate * xNoteTimePeriod
     return sample_window_size
+
+def average(listPassedIn):
+    theSum = sum(listPassedIn)
+    length = len(listPassedIn)
+    return theSum / float(length)
