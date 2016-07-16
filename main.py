@@ -84,7 +84,7 @@ print(durationInSeconds)
 
 #Convert the samples into midi file
 
-midiutil framework being used
+#midiutil framework being used
 from midiutil.MidiFile import MIDIFile
 
 # Create the MIDIFile Object with 1 track
@@ -100,16 +100,15 @@ MyMIDI.addTempo(track,time,sa.returnBPM())
 
 # Add a note. addNote expects the following information:
 for i in range(len(frequencies)):
-	print("Do Stuff")
-track = 0
-channel = 0
-pitch = 60
-time = 0
-duration = 1
-volume = 100
+	track = 0
+	channel = 0
+	pitch = frequencies[i]
+	time += durationInSeconds[i]
+	duration = durationInSeconds[i]
+	volume = 100
+	# Now add the note.
+	MyMIDI.addNote(track,channel,pitch,time,duration,volume)
 
-# Now add the note.
-MyMIDI.addNote(track,channel,pitch,time,duration,volume)
 
 # And write it to disk.
 binfile = open("output.mid", 'wb')
