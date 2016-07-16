@@ -6,6 +6,10 @@ sampleRate = 44100.0
 timeInSecondsPerBlock = .25
 
 
+def returnBPM():
+    return bpm
+
+
 def getNumCrossingPoints(block):
     numCrossingPoints = 0
     originalState = "Negative"
