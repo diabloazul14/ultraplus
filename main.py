@@ -5,6 +5,7 @@ import signalAnalysis as sa
 import sys
 import wave
 import numpy as np
+import os
 
 #Wav file data grabbing
 # wavFile = wav.wav(str(sys.argv[1]))
@@ -44,7 +45,7 @@ for sample in samples:
 	# print(samples[i])
 	i += 1
 
-#Analyze the Samples
+#Analyze the Samples frequencies
 
 samplesPerWindow = sa.sampleWindowSize()
 segments = sa.breakSamplesBySamplingRate(samples, samplesPerWindow)
@@ -57,20 +58,42 @@ for block in range(int(segments) - 1):
 	beginning += int(samplesPerWindow)
 	end += int(samplesPerWindow)
 
-# print(dominantFrequencies)
-theAverage = sa.average(dominantFrequencies)
-print(theAverage + 5)
+adjusted = []
+for frequency in dominantFrequencies:
+	adjusted.append(sa.frequencyAdjuster(frequency + 5))
+print("adjusted")
+print(adjusted)
 
-# adjustments = []
-# adjustmentFile = open("guesses/adjustments.txt", 'r')
-# for line in adjustmentFile:
-# 	adjustments.append(float(line))
-#
-# adjustedAverage = theAverage - adjustments[int(theAverage)]
-# print(adjustedAverage)
+#theAverage = sa.average(dominantFrequencies)
+#print(theAverage + 5)
+#print(sa.frequencyAdjuster(theAverage + 5))
 
-print(sa.frequencyAdjuster(theAverage))
+
+#Analyze the Samples Length
+durations, frequencies = sa.findNoteDurationInUnits(adjusted)
+print("durations")
+print(durations)
+print("frequencies")
+print(frequencies)
+
+durationInSeconds = sa.convertDurationUnitsToSeconds(durations)
+print("durationInSeconds")
+print(durationInSeconds)
+
+
 
 #Convert the samples into midi file
 
+#midiutil framework being used
+from midiutil.MidiFile import MIDIFile
+
+# Create the MIDIFile Object with 1 track
+MyMIDI = MIDIFile(1)
+
+# Tracks are numbered from zero. Times are measured in beats.
+track = 0
+time = 0
+
+
 #Convert the midi file to a pdf file
+# os.system("")

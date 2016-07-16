@@ -3,6 +3,7 @@ import math
 bpm = 60
 noteLength = 16
 sampleRate = 44100.0
+timeInSecondsPerBlock = .25
 
 
 def getNumCrossingPoints(block):
@@ -72,7 +73,7 @@ def difference(pointOne, pointTwo):
 
 def frequencyAdjuster(frequency):
     if frequency < 27 or frequency > 5000:
-        return frequency
+        return 0.0
     else:
         guessedFrequency, trueFrequency = readFrequencyAdjusterFile()
         #Scan guessedFrequency list for nearest match
@@ -90,3 +91,26 @@ def frequencyAdjuster(frequency):
                 break
             i -= 1
         return trueFrequency[i]
+
+
+def findNoteDurationInUnits(adjusted):
+    durations = []
+    frequencies = []
+    k = 1
+    for i in range(len(adjusted) - 1):
+        if adjusted[i] == adjusted[i + 1]:
+            k += 1
+        else:
+            durations.append(k)
+            frequencies.append(adjusted[i])
+            k = 1
+        if i == len(adjusted) - 2:
+            durations.append(k)
+            frequencies.append(adjusted[i])
+    return durations, frequencies
+
+def convertDurationUnitsToSeconds(durations):
+    timeInSeconds = []
+    for element in durations:
+        timeInSeconds.append(element * timeInSecondsPerBlock)
+    return timeInSeconds
