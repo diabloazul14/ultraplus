@@ -58,8 +58,18 @@ for block in range(int(segments) - 1):
 	end += int(samplesPerWindow)
 
 # print(dominantFrequencies)
-print(str(sa.average(dominantFrequencies)))
+theAverage = sa.average(dominantFrequencies)
+print(theAverage + 5)
 
+# adjustments = []
+# adjustmentFile = open("guesses/adjustments.txt", 'r')
+# for line in adjustmentFile:
+# 	adjustments.append(float(line))
+#
+# adjustedAverage = theAverage - adjustments[int(theAverage)]
+# print(adjustedAverage)
+
+print(sa.frequencyAdjuster(theAverage))
 
 #Convert the samples into midi file
 

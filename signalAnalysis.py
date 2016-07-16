@@ -54,3 +54,39 @@ def average(listPassedIn):
     theSum = sum(listPassedIn)
     length = len(listPassedIn)
     return theSum / float(length)
+
+def readFrequencyAdjusterFile():
+    guessedFrequency = []
+    trueFrequency = []
+    theFile = open("frequencyAdjusterList.txt", 'r')
+    for line in theFile:
+        tempList = line.split()
+        guessedFrequency.append(float(tempList[1]))
+        trueFrequency.append(float(tempList[0]))
+    return guessedFrequency, trueFrequency
+
+
+def difference(pointOne, pointTwo):
+    return abs(pointOne - pointTwo)
+
+
+def frequencyAdjuster(frequency):
+    if frequency < 27 or frequency > 5000:
+        return frequency
+    else:
+        guessedFrequency, trueFrequency = readFrequencyAdjusterFile()
+        #Scan guessedFrequency list for nearest match
+        currentdifference = 10000.0
+        closestFrequency = 0.0
+        for item in guessedFrequency:
+            if difference(item, frequency) < currentdifference:
+                currentdifference = difference(item, frequency)
+                closestFrequency = item
+
+        #return trueFrequency that maps to guessed frequency
+        i = len(guessedFrequency) - 1
+        for item in reversed(guessedFrequency):
+            if item == closestFrequency:
+                break
+            i -= 1
+        return trueFrequency[i]
