@@ -83,37 +83,17 @@ print(durationInSeconds)
 
 
 #Convert the samples into midi file
-
-#midiutil framework being used
-from midiutil.MidiFile import MIDIFile
-
-# Create the MIDIFile Object with 1 track
-MyMIDI = MIDIFile(1)
-
-# Tracks are numbered from zero. Times are measured in beats.
-track = 0
-time = 0
-
-# Add track name and tempo.
-MyMIDI.addTrackName(track,time,"Sample Track")
-MyMIDI.addTempo(track,time,sa.returnBPM())
-
-# Add a note. addNote expects the following information:
-for i in range(len(frequencies)):
-	track = 0
-	channel = 0
-	pitch = frequencies[i]
-	time += durationInSeconds[i]
-	duration = durationInSeconds[i]
-	volume = 100
-	# Now add the note.
-	MyMIDI.addNote(track,channel,pitch,time,duration,volume)
-
-
-# And write it to disk.
-binfile = open("output.mid", 'wb')
-MyMIDI.writeFile(binfile)
-binfile.close()
+pattern = midi.Pattern()
+track = midi.Track()
+pattern.append(track)
+# for i in range(len(frequencies)):
+on = midi.NoteOnEvent(tick = 0, velocity=20, pitch=midi.G_3)
+off = midi.NoteOffEvent(tick = 100, pitch = midi.G_3)
+track.append(off)
+eot = midi.EndOfTrackEvent(tick = 1)
+track.append(eot)
+print(pattern)
+midi.write_midifile("example.mid", pattern)
 
 
 #Convert the midi file to a pdf file
