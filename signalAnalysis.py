@@ -118,3 +118,35 @@ def convertDurationUnitsToSeconds(durations):
     for element in durations:
         timeInSeconds.append(element * timeInSecondsPerBlock)
     return timeInSeconds
+
+
+def convertFromFrequencyToMidiNoteNumber(frequencies):
+    convertedFrequencies = []
+    midiNoteList = generateMidiNoteList()
+    #find closest match and append index of closest match to convertedFrequencies
+    for frequency in frequencies:
+        convertedFrequencies.append(findClosestMatch(frequency))
+    return convertedFrequencies
+    
+
+def generateMidiNoteList():
+    midiNoteList = []
+    semitoneRatio = 2 ** (1.0/12.0)
+    c5 = 220.0 * (semitoneRatio ** 3)
+    c0 = c5 * .5 ** 5
+    for i in range(128):
+        midiNoteList.append(c0 * semitoneRatio ** i)
+    return midiNoteList
+
+def findClosestMatch(frequency):
+    oldDifference = 10000
+    listOfMidiNotes = generateMidiNoteList()
+    for note in listOfMidiNotes:
+        newDifference = difference(note, frequency)
+        if newDifference < oldDifference:
+            oldDifference = newDifference
+    i = 0
+    for note in listOfMidiNotes:
+        if oldDifference == difference(note, frequency):
+            return i
+        i += 1

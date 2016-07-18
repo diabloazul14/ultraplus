@@ -61,8 +61,8 @@ for block in range(int(segments) - 1):
 adjusted = []
 for frequency in dominantFrequencies:
 	adjusted.append(sa.frequencyAdjuster(frequency + 5))
-print("adjusted")
-print(adjusted)
+# print("adjusted")
+# print(adjusted)
 
 #theAverage = sa.average(dominantFrequencies)
 #print(theAverage + 5)
@@ -71,30 +71,50 @@ print(adjusted)
 
 #Analyze the Samples Length
 durations, frequencies = sa.findNoteDurationInUnits(adjusted)
-print("durations")
-print(durations)
-print("frequencies")
-print(frequencies)
+# print("durations")
+# print(durations)
+# print("frequencies")
+# print(frequencies)
 
 durationInSeconds = sa.convertDurationUnitsToSeconds(durations)
 print("durationInSeconds")
 print(durationInSeconds)
 
+midiNoteNumbers = sa.convertFromFrequencyToMidiNoteNumber(frequencies)
+print("midiNoteNumbers")
+print(midiNoteNumbers)
 
 
 #Convert the samples into midi file
-pattern = midi.Pattern()
-track = midi.Track()
-pattern.append(track)
-# for i in range(len(frequencies)):
-on = midi.NoteOnEvent(tick = 0, velocity=20, pitch=midi.G_3)
-off = midi.NoteOffEvent(tick = 100, pitch = midi.G_3)
-track.append(off)
-eot = midi.EndOfTrackEvent(tick = 1)
-track.append(eot)
-print(pattern)
-midi.write_midifile("example.mid", pattern)
+from midiutil.MidiFile import MIDIFile
+MyMIDI = MIDIFile(1)
+track = 0
+
+time = 0
+MyMIDI.addTrackName(track, time, "Sample Track")
+MyMIDI.addTempo(track, time, 120)
+track = 0
+channel = 0
+pitch = 60
+time = 0
+duration = 0
 
 
-#Convert the midi file to a pdf file
-# os.system("")
+for i in range(len(midiNoteNumbers)):
+	track = 0
+	channel = 0
+	pitch = midiNoteNumbers[i]
+	time += durationInSeconds[i]
+	duration = durationInSeconds[i]
+	volume = 100
+	MyMIDI.addNote(track, channel, pitch, time, duration, volume)
+
+binfile = open("output.mid", 'wb')
+MyMIDI.writeFile(binfile)
+binfile.close()
+
+
+# #Convert the midi file to a pdf file
+os.system("mscore output.mid -o output.pdf")
+os.system("evince output.pdf")
+# print(midiNoteNumbers)
