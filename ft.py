@@ -55,6 +55,18 @@ import saftt
 
 magnitudes = saftt.computeMagnitudes(fftList)
 
+#find maximum magnitude in window size
+import math
+windowSize = 44100 / 4.0 #checks every quarter of a second
+beginning = 0
+end = int(windowSize)
+frequencies = []
+for i in range (int(sa.breakSamplesBySamplingRate(magnitudes, windowSize) / 2.0)):
+	frequencies.append(saftt.maxFrequency(magnitudes[beginning:end]))
+	beginning += int(windowSize)
+	end += int(windowSize)
+# print(frequencies)
+
 import matplotlib.pyplot as plt
 plt.plot(magnitudes)
 plt.show()
