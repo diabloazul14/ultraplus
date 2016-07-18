@@ -150,3 +150,51 @@ def findClosestMatch(frequency):
         if oldDifference == difference(note, frequency):
             return i
         i += 1
+
+def removeNoise(durationList, midiNoteList):
+    #remove noise
+    indexesToDelete = []
+    for i in range(len(durationList)):
+        if durationList[i] <= .25:
+            indexesToDelete.append(i)
+   
+    for index in reversed(indexesToDelete):
+        del durationList[index]
+        del midiNoteList[index]
+    
+    return durationList, midiNoteList
+
+def consecutivesExist(midiNoteList):
+    for i in range(len(midiNoteList) - 1):
+        if midiNoteList[i] == midiNoteList[i + 1]:
+            return True
+    return False
+
+def addConsecutiveNotes(durationList, midiNoteList):
+    if len(durationList) == 1:
+        return durationList, midiNoteList
+    else:
+        while consecutivesExist(midiNoteList):
+            for i in range(len(midiNoteList) - 1):
+                if midiNoteList[i] == midiNoteList[i + 1]:
+                    durationList[i] += durationList[i + 1]
+                    del midiNoteList[i + 1]
+                    del durationList[i + 1]
+                    break
+        return durationList, midiNoteList
+
+def midiNotesOutOfRange(midiNoteList):
+    for note in midiNoteList:
+        if note < 12 or note > 84:
+            return True
+    return False
+
+def removeTooHighAndTooLowMidiNotes(durationList, midiNoteList):
+    #If midi note is above 84 or is below 12, remove it from both lists
+    while(midiNotesOutOfRange(midiNoteList)):
+        for i in range(len(midiNoteList)):
+            if midiNoteList[i] < 12 or midiNoteList[i] > 84:
+                del midiNoteList[i]
+                del durationList[i]
+                break
+    return durationList, midiNoteList

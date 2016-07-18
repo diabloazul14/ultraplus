@@ -1,4 +1,4 @@
-#The purpose of this is to run the entire process, no processing should occur within this file.
+#The purpose of this is to run the entire process
 import wav
 import midi
 import signalAnalysis as sa
