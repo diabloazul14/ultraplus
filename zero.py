@@ -85,48 +85,48 @@ midiNoteNumbers = sa.convertFromFrequencyToMidiNoteNumber(frequencies)
 # print(midiNoteNumbers)
 
 durationInSeconds, midiNoteNumbers = sa.removeTooHighAndTooLowMidiNotes(durationInSeconds, midiNoteNumbers)
-print(durationInSeconds)
-print(midiNoteNumbers)
-print("----------------------------------------------------------------")
+# print(durationInSeconds)
+# print(midiNoteNumbers)
+# print("----------------------------------------------------------------")
 durationInSeconds, midiNoteNumbers = sa.removeNoise(durationInSeconds, midiNoteNumbers)
-print(durationInSeconds)
-print(midiNoteNumbers)
-print("----------------------------------------------------------------")
+# print(durationInSeconds)
+# print(midiNoteNumbers)
+# print("----------------------------------------------------------------")
 durationInSeconds, midiNoteNumbers = sa.addConsecutiveNotes(durationInSeconds, midiNoteNumbers)
-print(durationInSeconds)
-print(midiNoteNumbers)
-print("----------------------------------------------------------------")
+# print(durationInSeconds)
+# print(midiNoteNumbers)
+# print("----------------------------------------------------------------")
 
 
-# #Convert the samples into midi file
-# from midiutil.MidiFile import MIDIFile
-# MyMIDI = MIDIFile(1)
-# track = 0
+#Convert the samples into midi file
+from midiutil.MidiFile import MIDIFile
+MyMIDI = MIDIFile(1)
+track = 0
 
-# time = 0
-# MyMIDI.addTrackName(track, time, "Sample Track")
-# MyMIDI.addTempo(track, time, 120)
-# track = 0
-# channel = 0
-# pitch = 60
-# time = 0
-# duration = 0
-
-
-# for i in range(len(midiNoteNumbers)):
-# 	track = 0
-# 	channel = 0
-# 	pitch = midiNoteNumbers[i]
-# 	time += durationInSeconds[i]
-# 	duration = durationInSeconds[i]
-# 	volume = 100
-# 	MyMIDI.addNote(track, channel, pitch, time, duration, volume)
-
-# binfile = open("output.mid", 'wb')
-# MyMIDI.writeFile(binfile)
-# binfile.close()
+time = 0
+MyMIDI.addTrackName(track, time, "Sample Track")
+MyMIDI.addTempo(track, time, 120)
+track = 0
+channel = 0
+pitch = 60
+time = 0
+duration = 0
 
 
-# # #Convert the midi file to a pdf file
-# os.system("mscore output.mid -o output.pdf")
-# os.system("evince output.pdf")
+for i in range(len(midiNoteNumbers)):
+	track = 0
+	channel = 0
+	pitch = midiNoteNumbers[i]
+	time += durationInSeconds[i]
+	duration = durationInSeconds[i]
+	volume = 100
+	MyMIDI.addNote(track, channel, pitch, time, duration, volume)
+
+binfile = open("output.mid", 'wb')
+MyMIDI.writeFile(binfile)
+binfile.close()
+
+
+# #Convert the midi file to a pdf file
+os.system("mscore output.mid -o output.pdf")
+os.system("evince output.pdf")

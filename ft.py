@@ -46,13 +46,15 @@ for sample in samples:
 	i += 1
 
 #analyze the samples
+##Perform FFT
 from scipy.fftpack import fft
 fftList = fft(samples)
 
-#print(fftList)
-temp = [""] * len(fftList)
+#Compute magnitude of fft
+import saftt
 
-for i in range(len(fftList)):
-	temp[i] = str(fftList[i])
+magnitudes = saftt.computeMagnitudes(fftList)
 
-print(temp)
+import matplotlib.pyplot as plt
+plt.plot(magnitudes)
+plt.show()
