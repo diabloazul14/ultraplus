@@ -62,10 +62,17 @@ beginning = 0
 end = int(windowSize)
 frequencies = []
 for i in range (int(sa.breakSamplesBySamplingRate(magnitudes, windowSize) / 2.0)):
-	frequencies.append(saftt.maxFrequency(magnitudes[beginning:end]))
+	maxFrequency, index = saftt.maxFrequency(magnitudes[beginning:end])
+	#frequencies.append(maxFrequency)
+	peak = index * 44100 / windowSize
+	print(peak)
+
 	beginning += int(windowSize)
 	end += int(windowSize)
 # print(frequencies)
+
+
+
 
 import matplotlib.pyplot as plt
 plt.plot(magnitudes)

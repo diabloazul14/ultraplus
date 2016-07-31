@@ -14,7 +14,12 @@ def maxFrequency(block):
 	theMax = 0
 	maxHeight = 4500
 	minHeight = 25
+	index = 0
+	i = 0
 	for element in block:
 		if element > theMax and element < maxHeight and element > minHeight:
 			theMax = element
-	return theMax
+			index = i
+		i += 1
+
+	return theMax, index
