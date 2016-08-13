@@ -1,0 +1,110 @@
+#The purpose of this is to run the entire process
+import wav
+import midi
+import signalAnalysis as sa
+import sys
+import wave
+import numpy as np
+import os
+import math
+
+MIN_SAMPLES = 0
+GOOD_ENOUGH_CORRELATION = .9
+def autocorrelation(buf, samplingrate):
+    SIZE = len(buf)
+    MAX_SAMPLES = Math.floor(SIZE/2.0)
+    best_offset = -1
+    best_correlation = 0
+    rms = 0
+    foundGoodCorrelation = False
+    correlations = []
+
+    for i in range(SIZE):
+        val = buf[i]
+        rms += val * val
+
+    rms = math.sqrt(rms / float(SIZE))
+    if rms < .01:
+        return -1
+    
+    lastCorrelation = 1
+    offset = MIN_SAMPLES
+    while (offset < MAX_SAMPLES):
+        correlation = 0
+        for i in range(MAX_SAMPLES):
+            correlation += math.fabs(buf[i] - buf[i + offset])
+
+        correlation = 1 - (correlation / float(MAX_SAMPLES))
+        correlations[offset] = correlation
+        if ((correlation > GOOD_ENOUGH_CORRELATION) and (correlation > lastCorrelation)):
+            foundGoodCorrelation = True
+            if (correlation > best_correlation):
+                best_correlation = correlation
+                best_offset = offset
+
+        elif (foundGoodCorrelation):
+            shift = (correlations[best_offset + 1] - correlations[best_offset - 1]) / float(correlations[best_offset])
+            return 44100 / float(best_offset + (8 * shift))
+
+
+
+
+
+
+        offset += 1
+
+
+#Wav file data grabbing
+wavFile = wave.open(str(sys.argv[1]), 'rb')
+rawsamples = wavFile.readframes(wavFile.getnframes())
+hexsamples = []
+
+i = 0
+while i < len(rawsamples):
+	newsample = rawsamples[i] + rawsamples[i + 1]
+	hexsamples.append(newsample.encode('hex'))
+	i += 2
+
+presamples = []
+for sample in hexsamples:
+	presamples.append(wav.littleEndianStringToInteger(sample))
+
+samples = []
+if wavFile.getnchannels() == 1:
+	samples = presamples
+if wavFile.getnchannels() == 2:
+	i = 0
+	lenPreSamples = len(presamples)
+	while i < lenPreSamples:
+		samples.append(presamples[i])
+		i += 2
+
+#shift the samples into the right range
+i = 0
+shiftValue = -32767
+for sample in samples:
+	samples[i] = sample + shiftValue
+	i += 1
+
+#Shift to -1 to 1 range
+i = 0
+for sample in samples:
+    samples[i] = sample / 32767.0
+    i += 1
+
+regionLength = 44100 / 2.0 #half second intervals
+
+#Zero padding
+numberOfRegions = math.ceil(len(samples) / regionLength)
+differenceInLenOfSamplesAndLenOfRegion = int((numberOfRegions * regionLength) - len(samples))
+for diff in range(differenceInLenOfSamplesAndLenOfRegion):
+    samples.append(0)
+
+#Perform autocorrelation on segments
+beginning = 0
+end = regionLength
+frequencies = []
+for region in range(numberOfRegions):
+    frequencies.append(samples[beginning:end])
+    beginning += regionLength
+    end += regionLength

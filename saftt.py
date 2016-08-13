@@ -20,6 +20,21 @@ def maxFrequency(block):
 		if element > theMax and element < maxHeight and element > minHeight:
 			theMax = element
 			index = i
+			print("Triggered")
 		i += 1
 
 	return theMax, index
+
+def returnSecondLargestFrequency(block, maxFrequency):
+	theSecondMax = 0
+	maxHeight = 4500
+	minHeight = 25
+	index = 0
+	i = 0
+	for element in block:
+		if element > theSecondMax and element < maxFrequency and element < maxHeight and element > minHeight:
+			theSecondMax = element
+			index = i
+			print("Triggered")
+		i += 1
+	return theSecondMax, index

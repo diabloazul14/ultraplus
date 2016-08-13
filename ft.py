@@ -50,30 +50,41 @@ for sample in samples:
 from scipy.fftpack import fft
 fftList = fft(samples)
 
+print(fftList)
+
 #Compute magnitude of fft
-import saftt
+# import saftt
 
-magnitudes = saftt.computeMagnitudes(fftList)
+# magnitudes = saftt.computeMagnitudes(fftList)
+# print(magnitudes)
 
-#find maximum magnitude in window size
-import math
-windowSize = 44100 / 4.0 #checks every quarter of a second
-beginning = 0
-end = int(windowSize)
-frequencies = []
-for i in range (int(sa.breakSamplesBySamplingRate(magnitudes, windowSize) / 2.0)):
-	maxFrequency, index = saftt.maxFrequency(magnitudes[beginning:end])
-	#frequencies.append(maxFrequency)
-	peak = index * 44100 / windowSize
-	print(peak)
-
-	beginning += int(windowSize)
-	end += int(windowSize)
-# print(frequencies)
+# maxFrequency, index = saftt.maxFrequency(magnitudes)
+# secondMaxFrequency, index = saftt.returnSecondLargestFrequency(magnitudes, maxFrequency)
+# print(secondMaxFrequency)
 
 
 
+# #find maximum magnitude in window size
+# import math
+# windowSize = 44100 / 4.0 #checks every quarter of a second
+# beginning = 0
+# end = int(windowSize)
+# frequencies = []
+# for i in range (int(sa.breakSamplesBySamplingRate(magnitudes, windowSize) / 2.0)):
+# 	maxFrequency, index = saftt.maxFrequency(magnitudes[beginning:end])
+# 	secondFrequency, index = saftt.returnSecondLargestFrequency(magnitudes[beginning:end], maxFrequency)
+# 	print(secondFrequency)
+# 	#frequencies.append(maxFrequency)
+# 	peak = index * 44100 / windowSize
+# 	#print(peak)
 
-import matplotlib.pyplot as plt
-plt.plot(magnitudes)
-plt.show()
+# 	beginning += int(windowSize)
+# 	end += int(windowSize)
+# # print(frequencies)
+
+
+
+
+# import matplotlib.pyplot as plt
+# plt.plot(magnitudes)
+# plt.show()
