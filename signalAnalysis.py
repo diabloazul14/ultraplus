@@ -139,7 +139,7 @@ def generateMidiNoteList():
     return midiNoteList
 
 def findClosestMatch(frequency):
-    if frequency < 0:
+    if frequency < 25:
         return 0
     oldDifference = 10000
     listOfMidiNotes = generateMidiNoteList()
@@ -187,7 +187,8 @@ def addConsecutiveNotes(durationList, midiNoteList):
 
 
 def addConsecutiveNotesAndGenerateDurationList(midiNoteList):
-    durationList = [.5] * len(midiNoteList)
+    durationList = [.25] * len(midiNoteList)
+    midiNoteList = removeZeros(midiNoteList)
     while consecutivesExist(midiNoteList):
         for i in range(len(midiNoteList) - 1):
             if midiNoteList[i] == midiNoteList[i + 1]:
@@ -196,6 +197,21 @@ def addConsecutiveNotesAndGenerateDurationList(midiNoteList):
                 del durationList[i + 1]
                 break
     return durationList, midiNoteList
+
+def zerosExist(midiNotesList):
+    for note in midiNotesList:
+        if note == 0:
+            return True
+    return False
+
+def removeZeros(midiNotesList):
+    while zerosExist(midiNotesList):
+        for i in range(len(midiNotesList)):
+            if midiNotesList[i] == 0:
+                del midiNotesList[i]
+                break
+    return midiNotesList
+
 
 def midiNotesOutOfRange(midiNoteList):
     for note in midiNoteList:

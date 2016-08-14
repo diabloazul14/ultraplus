@@ -1,10 +1,10 @@
 #The purpose of this is to run the entire process
 import wav
-import midi
+#import midi
 import signalAnalysis as sa
 import sys
 import wave
-import numpy as np
+#import numpy as np
 import os
 import math
 
@@ -90,7 +90,7 @@ for sample in samples:
     samples[i] = sample / 32767.0
     i += 1
 
-regionLength = int(44100 / 2.0) #half second intervals
+regionLength = int(44100 / 4.0) #half second intervals
 
 #Zero padding
 numberOfRegions = int(math.ceil(len(samples) / regionLength))
